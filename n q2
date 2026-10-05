@@ -1,0 +1,38 @@
+# Install packages if needed
+# BiocManager::install(c("DOSE", "clusterProfiler", "org.Hs.eg.db", "enrichplot"))
+
+library(DOSE)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(enrichplot)
+
+# Read gene list
+genes <- read.delim("genelist.txt", header = TRUE, sep = "\t")
+
+# Convert SYMBOL to Entrez ID
+gene_ids <- bitr(genes$gene_symbol,
+                  fromType = "SYMBOL",
+                  toType = "ENTREZID",
+                  OrgDb = org.Hs.eg.db)
+
+# Disease enrichment
+disease <- enrichDO(gene = gene_ids$ENTREZID,
+                     ont = "DO",
+                     pvalueCutoff = 0.05,
+                     pAdjustMethod = "BH",
+                     readable = TRUE)
+
+# Bar plot
+barplot(disease, showCategory = 10,
+        title = "Disease Ontology Enrichment")
+
+# Disease-gene network
+cnetplot(disease, showCategory = 5,
+         circular = FALSE,
+         colorEdge = TRUE)
+
+# Most significantly enriched disease
+result <- as.data.frame(disease)
+
+result[order(result$p.adjust), 
+       c("Description", "GeneRatio", "pvalue", "p.adjust", "geneID")][1, ]
