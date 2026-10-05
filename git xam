@@ -1,0 +1,27 @@
+sudo apt update
+sudo apt install git
+
+git --version
+
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+mkdir git-sessional
+cd git-sessional
+
+git init
+
+echo "These are my Git sessional notes." > exam.txt
+
+git status
+
+git add exam.txt
+
+git commit -m "Initial commit: added notes.txt"
+
+git status
+
+cd ~/git-sessional
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/git-sessional.git
+git push -u origin main
