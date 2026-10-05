@@ -1,0 +1,107 @@
+# ================================
+# DISEASE GENE NETWORK / ENRICHMENT
+# ================================
+
+# Install packages if needed
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install(c(
+    "clusterProfiler",
+    "org.Hs.eg.db",
+    "DOSE",
+    "enrichplot"
+), ask = FALSE, update = FALSE)
+
+# Load libraries
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(DOSE)
+library(enrichplot)
+library(ggplot2)
+
+# Read gene list
+data <- read.table(
+    "genelist.txt",
+    header = TRUE,
+    sep = "\t",
+    stringsAsFactors = FALSE
+)
+
+# Check data
+head(data)
+
+# Convert gene SYMBOL to Entrez ID
+gene_ids <- bitr(
+    data$gene_symbol,
+    fromType = "SYMBOL",
+    toType = "ENTREZID",
+    OrgDb = org.Hs.eg.db
+)
+
+# Merge gene information
+gene_data <- merge(
+    data,
+    gene_ids,
+    by.x = "gene_symbol",
+    by.y = "SYMBOL"
+)
+
+# Remove duplicate Entrez IDs
+gene_data <- gene_data[
+    !duplicated(gene_data$ENTREZID),
+]
+
+# Select genes with |logFC| >= 1
+selected_genes <- gene_data$ENTREZID[
+    abs(gene_data$logFC) >= 1
+]
+
+# Disease Ontology enrichment
+disease_enrichment <- enrichDO(
+    gene = selected_genes,
+    ont = "DO",
+    pvalueCutoff = 0.05,
+    pAdjustMethod = "BH",
+    qvalueCutoff = 0.2,
+    readable = TRUE
+)
+
+# View enrichment results
+disease_df <- as.data.frame(disease_enrichment)
+
+print(head(disease_df, 10))
+
+# Sort by adjusted p-value
+disease_df <- disease_df[
+    order(disease_df$p.adjust),
+]
+
+# Display most significantly enriched disease
+print(
+    disease_df[1, c(
+        "ID",
+        "Description",
+        "GeneRatio",
+        "BgRatio",
+        "pvalue",
+        "p.adjust",
+        "qvalue",
+        "Count"
+    )]
+)
+
+# Bar plot of top 10 diseases
+barplot(
+    disease_enrichment,
+    showCategory = 10,
+    title = "Disease Ontology Enrichment"
+)
+
+# Save bar plot
+ggsave(
+    "Disease_Enrichment_Barplot.png",
+    width = 12,
+    height = 8,
+    dpi = 300
+)
