@@ -1,0 +1,175 @@
+# ============================================================
+# COMPLETE GIT + GITHUB TUTORIAL
+# ============================================================
+
+# 1. Go to your home directory
+cd ~
+
+# ------------------------------------------------------------
+# 2. CLONE YOUR FORK
+# ------------------------------------------------------------
+git clone https://github.com/YOUR_USERNAME/exam.git
+
+# Enter the repository
+cd exam
+
+# Check that Git is working
+git status
+
+# Check remote repositories
+git remote -v
+
+
+# ------------------------------------------------------------
+# 3. CREATE A NEW BRANCH
+# ------------------------------------------------------------
+git checkout -b my-changes
+
+# Check current branch
+git branch
+
+
+# ------------------------------------------------------------
+# 4. CREATE / EDIT A FILE
+# ------------------------------------------------------------
+nano Names
+
+# In nano:
+# Ctrl + O     → Save
+# Enter        → Confirm filename
+# Ctrl + X     → Exit
+
+
+# ------------------------------------------------------------
+# 5. CHECK THE CHANGES
+# ------------------------------------------------------------
+git status
+
+# See exactly what was changed
+git diff
+
+
+# ------------------------------------------------------------
+# 6. ADD THE FILE TO STAGING AREA
+# ------------------------------------------------------------
+git add Names
+
+# Check staged file
+git status
+
+# See staged changes
+git diff --cached
+
+
+# ------------------------------------------------------------
+# 7. COMMIT THE CHANGE
+# ------------------------------------------------------------
+git commit -m "Added Names file"
+
+# Check commit history
+git log --oneline
+
+
+# ------------------------------------------------------------
+# 8. PUSH YOUR BRANCH TO GITHUB
+# ------------------------------------------------------------
+git push -u origin my-changes
+
+
+# ------------------------------------------------------------
+# 9. CHECK STATUS
+# ------------------------------------------------------------
+git status
+
+
+# ============================================================
+# PULL CHANGES FROM GITHUB
+# ============================================================
+
+# Make sure you are on the branch you want to update
+git checkout my-changes
+
+# Pull latest changes
+git pull origin my-changes
+
+
+# ============================================================
+# FETCH CHANGES WITHOUT MERGING
+# ============================================================
+
+git fetch origin
+
+
+# ============================================================
+# COMPARE YOUR BRANCH WITH MAIN
+# ============================================================
+
+git diff main..my-changes
+
+
+# ============================================================
+# ADD ALL CHANGED FILES
+# ============================================================
+
+git add .
+
+# Check
+git status
+
+# Commit
+git commit -m "Updated files"
+
+# Push
+git push
+
+
+# ============================================================
+# VIEW BRANCHES
+# ============================================================
+
+# Local branches
+git branch
+
+# Local + remote branches
+git branch -a
+
+
+# ============================================================
+# VIEW COMMIT HISTORY
+# ============================================================
+
+git log --oneline
+
+# More detailed history
+git log --oneline --graph --all
+
+
+# ============================================================
+# CHECK REMOTE REPOSITORY
+# ============================================================
+
+git remote -v
+
+
+# ============================================================
+# CHANGE TO MAIN BRANCH
+# ============================================================
+
+git checkout main
+
+# Get latest main branch
+git pull origin main
+
+
+# ============================================================
+# RETURN TO YOUR WORKING BRANCH
+# ============================================================
+
+git checkout my-changes
+
+
+# ============================================================
+# FINAL CHECK
+# ============================================================
+
+git status
