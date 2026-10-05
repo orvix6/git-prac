@@ -1,0 +1,32 @@
+# Clone
+git clone https://github.com/YOUR_USERNAME/exam.git
+
+# Enter repository
+cd exam
+
+# Create branch
+git checkout -b my-changes
+
+# Edit file
+nano Names
+
+# Check changes
+git status
+
+# See differences
+git diff
+
+# Add
+git add Names
+
+# Check staged changes
+git diff --cached
+
+# Commit
+git commit -m "Added student name"
+
+# Push
+git push -u origin my-changes
+
+# Pull later
+git pull origin my-changes
